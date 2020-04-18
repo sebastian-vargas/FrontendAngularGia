@@ -1,0 +1,152 @@
+<div class="container">
+    <div class="row">
+        <div class="col-sm">
+            <h3 class="float-left">{{ examen.descripcion}}</h3>
+            <h3 class="text-info float-right">Nota maxima: {{ examen.nota_maxima }}</h3>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm">
+            <div class="card mt-4">
+                <div class="card-body">
+
+                    <h5 class="card-title">Crear pregunta</h5>
+                    <form>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label>Descripcion*</label>
+                                    <textarea class="form-control" name="descripcion" rows="3" [(ngModel)]="pregunta_tmp.descripcion" ></textarea>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label >Imagen</label>
+                                    <textarea class="form-control" name="imagen" rows="3" [(ngModel)]="pregunta_tmp.imagen" placeholder="Ingrese la url de la imagen"></textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label>Valoración*</label>
+                                    <input type="number" class="form-control" name="Valoración" [(ngModel)]="pregunta_tmp.valoracion" />
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label>Tipo</label>
+                                    <select class="form-control" name="tipo" [(ngModel)]="pregunta_tmp.tipo" >
+                                        <option value="abierta" selected>Abierta</option>
+                                        <option value="unica">Unica respuesta</option>
+                                        <option value="multiple">Multiple respuesta</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+
+                    <div class="card" *ngIf="pregunta_tmp.tipo != 'abierta'">
+                        <div class="card-body">
+                            <h6 class="card-title">Agregar respuesta</h6>
+                            <form>
+
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label>Respuesta*</label>
+                                            <textarea class="form-control" name="respuesta" rows="3" [(ngModel)]="respuesta_tmp.respuesta" ></textarea>
+                               
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label>Es correcta</label>
+                                            <select class="form-control" name="correcta" [(ngModel)]="respuesta_tmp.correcta">
+                                                <option value="true" selected>Si</option>
+                                                <option value="false">No</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-12">
+                                        <button type="button" (click)="agregarRespuesta()"
+                                            class="btn btn-warning text-light float-right">
+                                            Agregar respuesta
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div *ngIf="pregunta_tmp.respuestas.length > 0">
+                        <h6 class="card-title mt-3">Respuestas</h6>
+                        <div class="card mt-2">
+                            
+                            <ul class="list-group list-group-flush">
+                                <li *ngFor="let respuesta of pregunta_tmp.respuestas; let index = index" class="list-group-item">
+                                    <a (click)="eliminarRespuesta(index)" class="btn btn-danger text-light float-right">Eliminar</a>
+                                    <p>
+                                        {{ respuesta.respuesta }}<br />
+                                        <b>Correcta: </b>{{ respuesta.correcta ? "Si" : "No" }}
+                                    </p>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+
+                    <button type="button" (click)="agregarPregunta()" class="btn btn-primary mt-3 float-right">
+                        Guardar pregunta
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-3">
+        <h4 class="ml-3">Preguntas</h4>
+
+        <div class="col-sm-12" *ngFor="let pregunta of preguntas; let index = index">
+            <div class="card mb-3">
+                <div class="row no-gutters">
+                    <div class="col-md-4">
+                        <img [src]="pregunta.imagen || 'http://via.placeholder.com/500'" class="card-img" alt="..." />
+                    </div>
+                    <div class="col-md-8">
+                        <div class="card-body">
+                            <a (click)="eliminarPregunta(index)" class="btn btn-danger text-light float-right ml-2">Eliminar</a>
+                            <h5 class="card-title">{{ pregunta.descripcion }}</h5>
+                            <p class="card-text">
+                                <b>Tipo: </b>{{ pregunta.tipo | titlecase }} <br />
+                                <b>Valoración: </b>{{ pregunta.valoracion }}
+                            </p>
+                        </div>
+
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item" *ngFor="let respuesta of pregunta.respuestas">
+                                {{ respuesta.respuesta }}<br />
+                                <b>Correcta: </b>{{ respuesta.correcta ? "Si" : "No" }}
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+
+    <div class="row">
+        <div class="col-sm">
+            <div class="card mb-3">
+                <div class="card-body">
+                    <button type="button" (click)="terminarExamen()" class="btn btn-success float-right">
+                        Terminar examen
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

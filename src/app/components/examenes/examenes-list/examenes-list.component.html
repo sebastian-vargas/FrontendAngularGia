@@ -1,0 +1,23 @@
+<button *ngIf="sesion =='profesor'"  type="button" routerLink="/crear-examen" class="btn btn-dark mt-2 mb-2">Añadir examen</button>
+
+<table class="table">
+    <thead class="thead-dark">
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Descripción</th>
+        <th scope="col">Nota maxima</th>
+        <th scope="col">Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let examen of examenes">
+        <th scope="row">{{ examen.id }}</th>
+        <td>{{ examen.descripcion }}</td>
+        <td>{{ examen.nota_maxima }}</td>
+        <td>
+            <button *ngIf="sesion =='profesor'" type="button" class="btn btn-danger" (click)="eliminar(examen.id)">Eliminar</button>
+            <button *ngIf="sesion =='estudiante'" type="button" class="btn btn-success ml-1" routerLink="/examen/{{examen.id}}">Tomar</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
